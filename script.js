@@ -11,16 +11,16 @@ let minZoom = 1;
 let maxZoom = 3;
 let currZoom = 1;
 
-let constraints = { video: true, audio: true };  // constraints jo bhi media humko chyie
+let constraints = { video: true, audio: true };  
 
-let mediaRecorder; // just a variable
-let isRecording = false;  // variable jo record start aur stop karne pe toggle karane main  help krega
-let chunks = []; // isme hum raw data ke chunks to store kar lenge
+let mediaRecorder; 
+let isRecording = false;  
+let chunks = []; 
 
-let filter = "";  // canvas main isse image filter dalne keliye
+let filter = ""; 
 
 galleryBtn.addEventListener("click", function(){
-    location.assign("gallery.html");              // going to gallery.html
+    location.assign("gallery.html");
 })
 
 for(let i=0; i<filters.length; i++){
@@ -50,29 +50,27 @@ zoomOut.addEventListener("click", function(){
     console.log(currZoom);
 })
 
-vidBtn.addEventListener("click", function () {  // button ke click pe recording on aur off ki functionality di hai 
+vidBtn.addEventListener("click", function () {  
     let innerDiv = vidBtn.querySelector("div");
 
     if (isRecording) {
-        mediaRecorder.stop();  // isse mediaRecorder ka stop event chalega
+        mediaRecorder.stop();  
         isRecording = false;
-        //videoBtn.innerText = "Record";  // button ka text change kardiya
         innerDiv.classList.remove("record-animation");
     } else {
-        mediaRecorder.start();    // isse mediaRecoder recording start kardega  
+        mediaRecorder.start();
         isRecording = true;
 
-        filter = "";    // making filter string empty
-        removeFilter();      // removing current filter
+        filter = "";    
+        removeFilter();      
         video.style.transform = `scale(1)`;
         currZoom = 1;
-        //videoBtn.innerText = "Recording...";
-        innerDiv.classList.add("record-animation"); // adding class for animation
+        innerDiv.classList.add("record-animation"); 
     }
 });
 
-capBtn.addEventListener("click", function () {  // captureBtn ke click pe event hai
-    capture();                                // capture function jo capture karega image
+capBtn.addEventListener("click", function () {  
+    capture();                                
 
     let innerDiv = capBtn.querySelector("div");
     innerDiv.classList.add("capture-animation");
@@ -81,39 +79,27 @@ capBtn.addEventListener("click", function () {  // captureBtn ke click pe event 
     },500);
 });
 
-navigator.mediaDevices                // navigator object browser ne diya hai , mediaDevices navigator ka child object hai  
-    .getUserMedia(constraints)   // getUserMedia function hai jo constraints leta hai aur humko camera ki input ki power dega , getUserMedia promise return based function hai,
-    // jab hum camera ki permission tab ye resolve hoga otherwise reject
-    .then(function (mediaStream) {          // promise agar resolve hoga to mediaStream object dega jisme hamari current media aati rhegi
-        video.srcObject = mediaStream;     // humne ab mediaStream ko video tag ka src object bna diya
-        //audio.srcObject = mediaStream; 
-        mediaRecorder = new MediaRecorder(mediaStream);   // MediaRecorder object bnaya recoding krne ke liye
+navigator.mediaDevices                
+    .getUserMedia(constraints)   
+    .then(function (mediaStream) { 
+        video.srcObject = mediaStream;             
+        mediaRecorder = new MediaRecorder(mediaStream);   
 
-        mediaRecorder.addEventListener("dataavailable", function (e) {  // ye jab chalega jab record krne ki limit exceed ho jaegi 
+        mediaRecorder.addEventListener("dataavailable", function (e) {   
             chunks.push(e.data);
         });
 
         mediaRecorder.addEventListener("stop", function () {
-            let blob = new Blob(chunks, { type: "video/mp4" });  // blob --> large raw data, chunks ko merge karke hum raw data bna rhe
-                                                                      // kis type ki file bnani hai usko whi type bnana hai
+            let blob = new Blob(chunks, { type: "video/mp4" });  
 
-            addMedia("video", blob); // indexDb main addMedia ko call aur blob pass kar diya
+            addMedia("video", blob); 
             chunks = [];
-
-
-            // let url = URL.createObjectURL(blob);  // jo humne media bnaya uska url bna liya , ye refernce hai data ka
-
-            // let a = document.createElement("a");  // nya anchor tag create kra
-            // a.href = url;                         // anchor tag ke href attribute ko url diya
-            // a.download = "video.mp4";            //  is naam se save hogi downloaded file
-            // a.click();                           // isse file download ho jaegi
-            // a.remove();
         });
     });
 
 function capture() {
     let c = document.createElement("canvas");
-    c.width = video.videoWidth;            // video tag ke andar jo video chal rhi hai uski width lo, agar hum yahan bas video.height karenge to video tag ki height aaegi jo ki 0 hai abhi aur capture nhi hoga, video tag ki height isliye 0 hai kyuki humne kuch set ni ki thi 
+    c.width = video.videoWidth;             
     c.height = video.videoHeight;
 
     let ctx = c.getContext("2d");
@@ -129,13 +115,7 @@ function capture() {
         ctx.fillRect(0,0,c.width, c.height);
     }
 
-    // let a = document.createElement("a");
-    // a.download = "image.jpg";
-    // a.href = c.toDataURL();         // data ko url main convert kar liya , yahan ye actual data hai
-
-    addMedia("img", c.toDataURL()); // indexDb main addMedia ko call kiya
-    // a.click();
-    // a.remove();
+    addMedia("img", c.toDataURL()); 
 }
 
 function applyFilter(filterColor){
