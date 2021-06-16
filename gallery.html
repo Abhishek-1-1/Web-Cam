@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="gallery.css">
+</head>
+<body>
+    
+    <button id="back">Back</button>
+
+    <div class="container">
+        <!-- <div class="media-card">
+            <div class="media-container"></div>
+            <div class="action-conatiner">
+                <button class="media-download">Download</button>
+                <button class="media-delete">Delete</button>
+            </div>
+        </div> -->
+
+    </div>
+    <script src="dbScript.js"></script>
+    <script>
+        setTimeout(function(){
+            viewMedia();           // dbscript ke load hote hone ke kuch millisec bad hume access hoga isliye ye setTimeout use hua hai idhar
+        },100);
+
+        let backBtn = document.querySelector("#back");
+        backBtn.addEventListener("click", function(){
+            location.assign("index.html");
+        })
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="name" placeholder="Db name" value="DB">
+    <input type="number" id="version" placeholder="1.0" value="1">
+    <button id="create">Create</button>
+
+    <hr />
+
+    <input type="text" id="note" placeholder="Your note" />
+    <button id="add">Add note</button>
+
+    <script>
+        let name = document.querySelector("#name")
+        let version = document.querySelector("#version")
+        let btn = document.querySelector("button#create")
+
+        let note = document.querySelector("#note");
+        let addBtn = document.querySelector("#add");
+
+        let db,v,dbAccess
+
+        addBtn.addEventListener("click", function () {
+            let val = note.value;
+            if (!dbAccess) {
+                alert("Please open a database to add note");
+                return;
+            }
+
+            //DB --> Notes
+            let tx = dbAccess.transaction("cs", "readwrite");
+            let csObjectStore = tx.objectStore("cs");
+            let data = {
+                nId: Date.now(),
+                noteValue: val,
+            };
+            csObjectStore.add(data);
+        })
+
+        btn.addEventListener("click", function(){
+
+            db = name.value;
+            v = version.value
+            let request = indexedDB.open(db,v); // use indexedDb open method to open or create 
+            // console.log(request);
+
+            request.addEventListener("success", function(){  // success event happens after DB is created / open successfully 
+                alert("db was created")                     // it runs after upgradeneeded event
+                dbAccess = request.result
+                viewNotes()
+            })
+
+            request.addEventListener("upgradeneeded", function(){  // it runs when version changes incrementally and the first time when DB was created 
+                alert("db upgrade");                              
+                let db = request.result
+                db.createObjectStore("cs",{keyPath: "nId"})
+            })
+
+            request.addEventListener("error", function(){  // it occurs when we try to open previous version or wrong  DB 
+                alert("error");
+            })
+        })
+
+        function viewNotes() {
+            // code jb hum database open kre to cs ke object store se sare object console pr print 
+            // assumption ki jb bhi ye function chalega mere pass dbAccess hoga
+
+            let tx = dbAccess.transaction("cs", "readonly");
+            let csObjectStore = tx.objectStore("cs");
+            let req = csObjectStore.openCursor();
+
+            req.addEventListener("success", function () {
+                let cursor = req.result;
+                if (cursor) {
+                    console.log(cursor.value);
+                    cursor.continue();
+                }
+            })
+        }
+    </script>
+</body>
+</html>
+

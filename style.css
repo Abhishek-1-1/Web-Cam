@@ -1,0 +1,133 @@
+*{
+ box-sizing: border-box;   
+}
+
+body{
+    margin: 0;
+}
+
+.video-container{
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background-color: black;
+}
+
+video{
+    height: 100%;
+    width: 100%;
+}
+
+#record,
+#capture{
+    z-index: 3;
+    position: fixed;
+    right: 2rem;
+    height: 4rem;
+    width: 4rem;
+    border-radius: 50%;
+    border: 5px solid white;
+    background-color: black;
+}
+
+#record{
+    top: 40vh;
+}
+
+#capture{
+    top: 50vh;
+}
+
+#record div,
+#capture div{
+    height: 2.5rem;
+    width: 2.5rem;
+    margin: auto;
+    z-index: 3;
+    border-radius: 50%;
+}
+
+#record div{
+    background: red;
+}
+
+#capture div{
+    background: white;
+}
+
+.record-animation{
+    animation: inOut 1s infinite;
+}
+
+.capture-animation {
+    animation: inOut 0.5s;
+}
+
+@keyframes inOut {
+    0%{
+        transform: scale(1);
+    }
+
+    50%{
+        transform: scale(1.2);
+    }
+
+    100%{
+        transform: scale(1);
+    }
+}
+
+.filter-container {
+    height: 25rem;
+    width: 5rem;
+    position: fixed;
+    top: calc((100vh - 25rem) / 2);
+    left: 2rem;
+    background-color: red;
+    border: 2px solid green;
+    z-index: 3;
+}
+
+.filters {
+    border: 2px solid white;
+    height: calc(25rem / 6);
+    width: 100%;
+    background: url(img.jfif);
+    background-size: cover;
+    background-blend-mode: soft-light;
+}
+
+.zoom-in-out-container {
+    height: 10rem;
+    width: 5rem;
+    z-index: 3;
+    position: fixed;
+    right: 1.8rem;
+    top: 8rem;
+}
+
+.zoom-in-out-container div{
+    width: 100%;
+    height: 50%;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    font-size: 3.2rem;
+}
+
+.filter-div {
+    z-index: 1;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+}
+
+#gallery{
+    z-index: 3;
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 5rem;
+    height: 5rem;
+}
