@@ -97,6 +97,10 @@ video{
     background-blend-mode: soft-light;
 }
 
+.filters:hover{
+    cursor: pointer;
+}
+
 .zoom-in-out-container {
     height: 10rem;
     width: 5rem;
@@ -104,6 +108,10 @@ video{
     position: fixed;
     right: 1.8rem;
     top: 8rem;
+}
+
+.zoom-in-out-container:hover{
+    cursor: pointer;
 }
 
 .zoom-in-out-container div{
@@ -130,4 +138,27 @@ video{
     right: 2rem;
     width: 5rem;
     height: 5rem;
+}
+
+#gallery .gallery-img{
+    width: 100%;
+    height: 4rem;
+    background: url(gallery.jfif);
+    background-size: cover;
+}
+
+#gallery .gallery-img:hover{
+    cursor: pointer;
+}
+
+#gallery .text{
+    height: 1rem;
+    width: 100%;
+    text-align: center;
+    background-color: white;
+    
+}
+
+#gallery .text:hover{
+    cursor: pointer;
 }
