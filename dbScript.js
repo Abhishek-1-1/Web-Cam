@@ -1,13 +1,3 @@
-// Database create/open (camera)
-// Database objectStore => gallery
-// photo capture / video record -> gallery(obs) store
-// format:
-// data = {
-//     mid: 16309394903,
-//     type: "img" / "vid",
-//     media: actual apka content (img => c.toDataUrl, video => blob) 
-// }
-
 let dbAccess;
 let container = document.querySelector(".container")
 let request = indexedDB.open("Camera", 1);
@@ -26,7 +16,6 @@ request.addEventListener("error", function(){
 });
 
 function addMedia(type, media){
-    // assumption ki tbhi chalega jb dbAccess hoga
 
     let tx = dbAccess.transaction("gallery", "readwrite");
     let galleryObjectStore = tx.objectStore("gallery");
@@ -40,7 +29,6 @@ function addMedia(type, media){
 }
 
 function viewMedia(){
-    // assumption ki tbhi chalega jb dbAccess hoga
 
     let tx = dbAccess.transaction("gallery", "readonly");
     let galleryObjectStore = tx.objectStore("gallery");
@@ -63,10 +51,8 @@ function viewMedia(){
 
             deleteBtn.addEventListener("click", function(e){
                 let mId = e.currentTarget.getAttribute("data-id");
-                //UI se delete karna hai
                 e.currentTarget.parentElement.parentElement.remove();
                 
-                // indexedDB se data delete karna hai
                 deleteMediaFromDB(mId);
             })
 
@@ -79,8 +65,7 @@ function viewMedia(){
 
                 downloadBtn.addEventListener("click", function(e){
                     let a = document.createElement("a");
-                    a.download = "image.jpg";
-                    // a.href = e.currentTarget.parentElement.parentElement.querySelector(".media-container").children[0].src; // ye aur niche wali line se same kaam horha hai 
+                    a.download = "image.jpg"; 
                     a.href = img.src;
                     a.click();
                     a.remove();
@@ -120,7 +105,6 @@ function viewMedia(){
 }
 
 function deleteMediaFromDB(mId){
-    // code jisse hum delete karenge
     let tx = dbAccess.transaction("gallery","readwrite");
     let galleryObjectStore = tx.objectStore("gallery");
     galleryObjectStore.delete(Number(mId));
