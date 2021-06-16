@@ -47,29 +47,26 @@
 
             db = name.value;
             v = version.value
-            let request = indexedDB.open(db,v); // use indexedDb open method to open or create 
-            // console.log(request);
+            let request = indexedDB.open(db,v);  
 
-            request.addEventListener("success", function(){  // success event happens after DB is created / open successfully 
-                alert("db was created")                     // it runs after upgradeneeded event
+            request.addEventListener("success", function(){  
+                alert("db was created")                     
                 dbAccess = request.result
                 viewNotes()
             })
 
-            request.addEventListener("upgradeneeded", function(){  // it runs when version changes incrementally and the first time when DB was created 
+            request.addEventListener("upgradeneeded", function(){  
                 alert("db upgrade");                              
                 let db = request.result
                 db.createObjectStore("cs",{keyPath: "nId"})
             })
 
-            request.addEventListener("error", function(){  // it occurs when we try to open previous version or wrong  DB 
+            request.addEventListener("error", function(){  
                 alert("error");
             })
         })
 
         function viewNotes() {
-            // code jb hum database open kre to cs ke object store se sare object console pr print 
-            // assumption ki jb bhi ye function chalega mere pass dbAccess hoga
 
             let tx = dbAccess.transaction("cs", "readonly");
             let csObjectStore = tx.objectStore("cs");
